@@ -73,3 +73,10 @@ variable cert_byte_length {
   type = string
 }
 
+variable terraform_cloud_organization {
+  type = string
+}
+
+variable terraform_cloud_workspace {
+  type = string
+}

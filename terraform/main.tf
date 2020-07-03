@@ -16,10 +16,13 @@ provider "google-beta" {
 
 // Configure remote state
 terraform {
-  backend "gcs" {
-    bucket      = var.remote_state_bucket
-    prefix      = var.remote_state_prefix
-    credentials = var.credentials_path
+  backend "remote" {
+    hostname = "app.terraform.io"
+    organization = "jonioliveira"
+
+    workspaces {
+      name = "tf-web-from-bucket"
+    }
   }
 }
 
@@ -44,6 +47,10 @@ resource "google_service_account" "this" {
   project      = var.project
   account_id   = substr(var.name, 0, 28)
   display_name = var.name
+}
+
+resource "google_service_account_key" "this"{
+  service_account_id = google_service_account.myaccount.name
 }
 
 #------------------------------------------------------

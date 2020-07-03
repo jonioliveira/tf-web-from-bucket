@@ -1,4 +1,4 @@
-.PHONY: help build bash setup-remote-state-init setup-remote-state-plan setup-remote-state-apply setup-remote-state-destroy fmt init plan apply destroy full-plan full-apply
+.PHONY: help build bash setup-remote-state-init setup-remote-state-plan setup-remote-state-apply setup-remote-state-destroy fmt init plan apply destroy lint full-plan full-apply
 .DEFAULT_GOAL := help
 
 COMPOSE=docker-compose -f docker-compose.yaml
@@ -60,6 +60,10 @@ apply:
 # target: destroy - Terraform: destroy - Destroy Terraform-managed infrastructure.
 destroy:
 	${COMPOSE-RUN} terraform destroy --auto-approve
+
+# target: lint - Terraform: lint - Run linter into Terraform files.
+lint:
+	${COMPOSE-RUN} tflint
 
 # target: full-plan - Init and plan the GCP terraform remote state bucket and the main terraform script.
 full-plan: setup-remote-state-init init setup-remote-state-plan plan
